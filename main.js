@@ -1,20 +1,18 @@
 //recuperation module
-let readline = require("readline-sync");
+let toolbox = require('./toolbox.js');
+let jeu = require('./jeu.js')
 
-//Initialise variable
-let puissance4 = [];
-let nbColonne = 7,
-    nbLigne = 6;
-const joueur1car = choixCaractere(1);
-const joueur2car = choixCaractere(2);
 
 /*************Start game*************/
 
 intro();
+jeu.joueur1car = choixCaractere(1);
+jeu.joueur2car = choixCaractere(2);
+
 //Instancie la  fonction initialiserTableauVide
-puissance4 = initialiserTableauVide(nbLigne, nbColonne, 0);
+jeu.initialisation();
 //Affichage
-afficherPuissance4(puissance4, joueur1car, joueur2car);
+jeu.afficherPuissance4();
 
 /*************End game*************/
 
@@ -48,11 +46,9 @@ function intro() {
     console.log(txt);
 }
 function choixCaractere(joueur){ 
-    return saisieString(`Veuillez choisir le caractère que vous voulez pour joueur ${joueur} :`)
+    return toolbox.saisieString(`Veuillez choisir le caractère que vous voulez pour joueur ${joueur} :`)
 }
-function saisieString(string) {
-    return readline.question(string);
-}
+
 /**
  * Function permettant à un joueur de jouer une case
  * Retourne true si le joueur à gagné
@@ -64,144 +60,14 @@ function jouerCase(joueur) {
 
     while(ligneVide === -1 || colonne <=0 || colonne >7 ) {
         console.log("Choisir une colonne à un emplacement vide");
-        colonne = saisirColonne(joueur);
-        ligneVide = retournLigneCaseVideColonne(colonne);
+        colonne = jeu.saisirColonne(joueur);
+        ligneVide = jeu.retournLigneCaseVideColonne(colonne);
     }
     
-    puissance4[ligneVide][colonne-1] = joueur; //colonne et -1 pour éviter de partir de 0 à 7
-    afficherPuissance4(puissance4, joueur1car, joueur2car);
-    return verificationFinJeu(joueur);
+    jeu.jouerCase(joueur, ligneVide, colonne); //colonne et -1 pour éviter de partir de 0 à 7
+    jeu.afficherPuissance4();
+    return jeu.verificationFinJeu(joueur);
 }//Fin jouerCase
 
-/**
- * Fonction permettant de saisir une colonne
- */
-function saisirColonne(joueur) {
-    //marque le numéro du joueur en cour
-    if(joueur === 1 ){
-        console.log("C'est au tour de Joueur 1");
-    }
-    else{
-        console.log("C'est au tour de Joueur 2");
-    }
-    return parseInt(saisieString('Quelle colonne ?'));
-}
-/**
- * Function permettant de retourner la premiere ligne vide d'une colonne
- * @param {Number} colonne retourne -1 si la colonne est pleine
- */
-function retournLigneCaseVideColonne(colonne) {
-    for (let i = nbLigne-1; i>=0;i--) { //On part de la ligne 5 et on remonte pour trouver ligne vide
-        if(verifCaseVide(i, colonne)) {
-            return i;
-        }  
-    }
-    return -1;
-}
-/**
- * Function permettant de retourner si une cellule est vide(return true / false)
- * @param {Number} ligne 
- * @param {Number} colonne 
- */
-function verifCaseVide(ligne, colonne) {
-    return puissance4[ligne][colonne-1] === 0; //si 0 la case est vide (expression boolean)
-}
-function verificationFinJeu(joueur) {
-    if(verificationLigneFinJeu(joueur) || verificationColoneFinJeu(joueur) || verificationDeiagonalFinJeu(joueur)) {
-        return true
-    }
-    return false;
-}
 
-function verificationLigneFinJeu(joueur) {
-    for(let i = nbLigne-1; i >=0; i--) { //commence par la dernière ligne
-        for(var j = 0; j< nbColonne-3; j++) {
-            if( puissance4[i][j] === joueur &&
-                puissance4[i][j+1] === joueur &&
-                puissance4[i][j+2] === joueur &&
-                puissance4[i][j+3] === joueur
-                )return true;
-        }
-    }
-    return false;
-}
-/**
- * Fonction permettant de verifier si un joueur à gagné en colonne
- * @param {Number} joueur 
- */
-function verificationColoneFinJeu (joueur) {
-    for(let i = 0; i < nbColonne; i++) {
-        for (let j = nbLigne-4; j>=0; j--) {
-            if( puissance4[j][i] === joueur &&
-                puissance4[j+1][i] === joueur &&
-                puissance4[j+2][i] === joueur &&
-                puissance4[j+3][i] === joueur
-                )return true;
-        }
-    }
-    return false;
-}
-/**
- * Fonction permettant de verifier si un joueur à gagné en diagonal
- * @param {Number} joueur 
- */
-function verificationDeiagonalFinJeu (joueur) {
-    for(let i = nbLigne-1; i >=3; i--) { //commence par la dernière ligne
-        for(var j = 0; j< nbColonne; j++) {
-            if( puissance4[i][j] === joueur &&
-                puissance4[i-1][j+1] === joueur &&
-                puissance4[i-2][j+2] === joueur &&
-                puissance4[i-3][j+3] === joueur
-                )return true;
-                if( puissance4[i][j] === joueur &&
-                    puissance4[i-1][j-1] === joueur &&
-                    puissance4[i-2][j-2] === joueur &&
-                    puissance4[i-3][j-3] === joueur
-                    )return true;
-        }
-    }
-    return false;
-}
-/**
- * Permet d'initialiser un tableau de tableau en fonction d'in nombre de ligne de colonne passer en parametre
- * @param {Number} row 
- * @param {Number} column 
- * @param {*} car 
- */
-function initialiserTableauVide(row, column, car = '') {
-    let tab = [];
-    for (let i = 0; i < row; i++) {
-        let ligne = [];
-        for (let j = 0; j < column; j++) {
-            ligne.push(car);
-            
-        }//end for J
-        tab.push(ligne)
-    }//end for I
-    return tab;
-}//Fin initialiserTableauVide()
-/**
- * Permet d'afficher un tableau de puissance 4
- * @param {Array<String} tab tableau de car
- * @param {String} joueur1 le car de joueur1
- * @param {String} joueur2 le car de joueur2
- */
-function afficherPuissance4(tab, j1 , j2) {
-    for (let i = 0; i < tab.length; i++) {
-        let ligne="";
-        for(let j=0; j < tab[i].length; j++) {
-            ligne += "| ";
 
-            if(tab[i][j] === 0) {
-                ligne += "_"
-            }else if(tab[i][j] === 1) {
-                ligne += j1;
-            }else if(tab[i][j] === 2) {
-                ligne += j2;
-            }
-
-            ligne += " |";
-        }//end for J
-        console.log(ligne)
-    }//end for I
-}
