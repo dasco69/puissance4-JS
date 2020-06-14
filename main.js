@@ -5,13 +5,18 @@ let readline = require("readline-sync");
 let puissance4 = [];
 let nbColonne = 7,
     nbLigne = 6;
-const joueur1car = "x";
-const joueur2car = "o";
+const joueur1car = choixCaractere(1);
+const joueur2car = choixCaractere(2);
 
+/*************Start game*************/
+
+intro();
 //Instancie la  fonction initialiserTableauVide
 puissance4 = initialiserTableauVide(nbLigne, nbColonne, 0);
 //Affichage
 afficherPuissance4(puissance4, joueur1car, joueur2car);
+
+/*************End game*************/
 
 
 /*
@@ -31,6 +36,22 @@ while(true) { //boucle infinie sur true
         console.log("Joueur 2 à Gagné");
         break;
     }
+}
+/**
+ * Function affichant le texte de bienvenue
+ * @param {String} txt
+ */
+function intro() {
+    let txt = "\n***********************************\n";
+    txt += "***** Bienvenu su Puissance 4 *****\n";
+    txt += "***********************************\n";
+    console.log(txt);
+}
+function choixCaractere(joueur){ 
+    return saisieString(`Veuillez choisir le caractère que vous voulez pour joueur ${joueur} :`)
+}
+function saisieString(string) {
+    return readline.question(string);
 }
 /**
  * Function permettant à un joueur de jouer une case
@@ -63,7 +84,7 @@ function saisirColonne(joueur) {
     else{
         console.log("C'est au tour de Joueur 2");
     }
-    return parseInt(readline.question('Quelle colonne ?'));
+    return parseInt(saisieString('Quelle colonne ?'));
 }
 /**
  * Function permettant de retourner la premiere ligne vide d'une colonne
