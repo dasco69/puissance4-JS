@@ -92,18 +92,47 @@ function verificationLigneFinJeu(joueur) {
                 puissance4[i][j+1] === joueur &&
                 puissance4[i][j+2] === joueur &&
                 puissance4[i][j+3] === joueur
-                ) {
-                return true;
-            }
+                )return true;
         }
     }
     return false;
 }
+/**
+ * Fonction permettant de verifier si un joueur à gagné en colonne
+ * @param {Number} joueur 
+ */
 function verificationColoneFinJeu (joueur) {
-
+    for(let i = 0; i < nbColonne; i++) {
+        for (let j = nbLigne-4; j>=0; j--) {
+            if( puissance4[j][i] === joueur &&
+                puissance4[j+1][i] === joueur &&
+                puissance4[j+2][i] === joueur &&
+                puissance4[j+3][i] === joueur
+                )return true;
+        }
+    }
+    return false;
 }
+/**
+ * Fonction permettant de verifier si un joueur à gagné en diagonal
+ * @param {Number} joueur 
+ */
 function verificationDeiagonalFinJeu (joueur) {
-
+    for(let i = nbLigne-1; i >=3; i--) { //commence par la dernière ligne
+        for(var j = 0; j< nbColonne; j++) {
+            if( puissance4[i][j] === joueur &&
+                puissance4[i-1][j+1] === joueur &&
+                puissance4[i-2][j+2] === joueur &&
+                puissance4[i-3][j+3] === joueur
+                )return true;
+                if( puissance4[i][j] === joueur &&
+                    puissance4[i-1][j-1] === joueur &&
+                    puissance4[i-2][j-2] === joueur &&
+                    puissance4[i-3][j-3] === joueur
+                    )return true;
+        }
+    }
+    return false;
 }
 /**
  * Permet d'initialiser un tableau de tableau en fonction d'in nombre de ligne de colonne passer en parametre
