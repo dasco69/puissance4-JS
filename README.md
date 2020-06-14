@@ -1,4 +1,4 @@
-# Puissance4-JS:pizza :pc
+# Puissance4-JS :pizza :pc
 Puissance4 width js on terminal
 
 ## Recommendation
