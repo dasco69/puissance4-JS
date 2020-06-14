@@ -56,6 +56,7 @@ function jouerCase(joueur) {
  * Fonction permettant de saisir une colonne
  */
 function saisirColonne(joueur) {
+    //marque le numéro du joueur en cour
     if(joueur === 1 ){
         console.log("C'est au tour de Joueur 1");
     }
