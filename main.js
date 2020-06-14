@@ -43,7 +43,7 @@ function jouerCase(joueur) {
 
     while(ligneVide === -1 || colonne <=0 || colonne >7 ) {
         console.log("Choisir une colonne à un emplacement vide");
-        colonne = saisirColonne();
+        colonne = saisirColonne(joueur);
         ligneVide = retournLigneCaseVideColonne(colonne);
     }
     
@@ -55,7 +55,13 @@ function jouerCase(joueur) {
 /**
  * Fonction permettant de saisir une colonne
  */
-function saisirColonne() {
+function saisirColonne(joueur) {
+    if(joueur === 1 ){
+        console.log("C'est au tour de Joueur 1");
+    }
+    else{
+        console.log("C'est au tour de Joueur 2");
+    }
     return parseInt(readline.question('Quelle colonne ?'));
 }
 /**
