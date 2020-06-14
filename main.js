@@ -32,7 +32,11 @@ while(true) { //boucle infinie sur true
         break;
     }
 }
-
+/**
+ * Function permettant à un joueur de jouer une case
+ * Retourne true si le joueur à gagné
+ * @param {Number} joueur 
+ */
 function jouerCase(joueur) {
     let ligneVide = -1;
     let colonne = -1;
@@ -45,7 +49,7 @@ function jouerCase(joueur) {
     
     puissance4[ligneVide][colonne-1] = joueur; //colonne et -1 pour éviter de partir de 0 à 7
     afficherPuissance4(puissance4, joueur1car, joueur2car);
-    return verificationFinJeu();
+    return verificationFinJeu(joueur);
 }//Fin jouerCase
 
 /**
@@ -54,13 +58,53 @@ function jouerCase(joueur) {
 function saisirColonne() {
     return parseInt(readline.question('Quelle colonne ?'));
 }
+/**
+ * Function permettant de retourner la premiere ligne vide d'une colonne
+ * @param {Number} colonne retourne -1 si la colonne est pleine
+ */
 function retournLigneCaseVideColonne(colonne) {
-    return 5;
+    for (let i = nbLigne-1; i>=0;i--) { //On part de la ligne 5 et on remonte pour trouver ligne vide
+        if(verifCaseVide(i, colonne)) {
+            return i;
+        }  
+    }
+    return -1;
 }
-function verificationFinJeu() {
-    return true;
+/**
+ * Function permettant de retourner si une cellule est vide(return true / false)
+ * @param {Number} ligne 
+ * @param {Number} colonne 
+ */
+function verifCaseVide(ligne, colonne) {
+    return puissance4[ligne][colonne-1] === 0; //si 0 la case est vide (expression boolean)
+}
+function verificationFinJeu(joueur) {
+    if(verificationLigneFinJeu(joueur) || verificationColoneFinJeu(joueur) || verificationDeiagonalFinJeu(joueur)) {
+        return true
+    }
+    return false;
 }
 
+function verificationLigneFinJeu(joueur) {
+    for(let i = nbLigne-1; i >=0; i--) { //commence par la dernière ligne
+        for(var j = 0; j< nbColonne-3; j++) {
+            if( puissance4[i][j] === joueur &&
+                puissance4[i][j+1] === joueur &&
+                puissance4[i][j+2] === joueur &&
+                puissance4[i][j+3] === joueur
+                ) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+function verificationColoneFinJeu (joueur) {
+
+}
+function verificationDeiagonalFinJeu (joueur) {
+
+}
 /**
  * Permet d'initialiser un tableau de tableau en fonction d'in nombre de ligne de colonne passer en parametre
  * @param {Number} row 
