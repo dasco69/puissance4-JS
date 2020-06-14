@@ -1,6 +1,6 @@
 # Puissance4-JS 
 
-:pizza:  , :computer:  Puissance4 width js on terminal
+:pizza:   :computer:  Puissance4 width js on terminal  :computer: :pizza: 
 
 ## Recommendation
 Install Node.js
